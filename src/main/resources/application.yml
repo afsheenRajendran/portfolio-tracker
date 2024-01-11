@@ -1,0 +1,11 @@
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/portfolio
+    username: afsdb
+    password: afsdb
+
+spring.jpa.hibernate.ddl-auto: none
+
+
+
