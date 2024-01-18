@@ -5,7 +5,8 @@ spring:
     username: afsdb
     password: afsdb
 
-spring.jpa.hibernate.ddl-auto: none
+  jpa:
+    hibernate.ddl-auto: none
 
 
 
