@@ -11,14 +11,22 @@ import jakarta.persistence.Id;
 @Entity
 public class Txn {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long txnId;
     
     private String type;
 
     private BigDecimal amount;
 
     private String description;
+
+    // for JPA only, not used
+    public Txn() {
+    }
+
+    public Long getTxnId() {
+        return txnId;
+    }
 
     public String getType() {
         return type;
