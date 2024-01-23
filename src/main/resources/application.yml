@@ -1,7 +1,20 @@
+debug: false
+
 spring:
   datasource:
-    driverClassName: org.h2.Driver
-    url: jdbc:h2:mem:testdb
+    url: jdbc:mysql://localhost:3306/portfolio
     username: afsdb
     password: afsdb
-    
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: none
+
+  flyway:
+    enabled: true
+    schemas: portfolio
+    user: portfolio_flyway
+    password: portfolio_flyway
+    url: jdbc:mysql://localhost:3306/portfolio
+
