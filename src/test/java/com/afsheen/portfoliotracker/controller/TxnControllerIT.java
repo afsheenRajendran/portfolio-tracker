@@ -1,8 +1,10 @@
 package com.afsheen.portfoliotracker.controller;
 
+import com.afsheen.portfoliotracker.dto.TxnRequestBody;
 import com.afsheen.portfoliotracker.repository.TxnRepository;
 import io.restassured.RestAssured;
 import io.restassured.filter.log.LogDetail;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,9 +19,11 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
+import java.math.BigDecimal;
+
 import static io.restassured.RestAssured.when;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static io.restassured.RestAssured.with;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Testing with TestRestTemplate and @Testcontainers (image mysql:8.0-debian)
@@ -64,14 +68,45 @@ public class TxnControllerIT {
 
     @Test
     void testFindAll() {
-        Response response = when()
+        Response response = invoke_findAll();
+
+        assertNotNull(response);
+    }
+
+    @Test
+    void testCreate() {
+        TxnRequestBody req = new TxnRequestBody();
+        req.setType("CREDIT");
+        req.setAmount(BigDecimal.TEN);
+        req.setDescription("test081");
+
+        Response response = invoke_create(req);
+        assertNotNull(response);
+
+        assertEquals(201, response.statusCode());
+    }
+
+    private Response invoke_findAll() {
+        return when()
                 .request("GET", "/txns")
                 .then()
                 .log()
                 .ifValidationFails(LogDetail.BODY)
                 .extract()
                 .response();
-
-        assertNotNull(response);
     }
+
+    private Response invoke_create(TxnRequestBody txnRequestBody) {
+        return with()
+                .body(txnRequestBody)
+                .when()
+                .contentType(ContentType.JSON)
+                .request("POST", "/txns")
+                .then()
+                .log()
+                .ifValidationFails(LogDetail.BODY)
+                .extract()
+                .response();
+    }
+
 }
