@@ -7,7 +7,6 @@ spring:
     password: afsdb
 
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: none
 
