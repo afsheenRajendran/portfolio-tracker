@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.List;
 
+import com.afsheen.portfoliotracker.entity.TxnType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,13 +52,12 @@ public class TxnRepositoryDataJpaTest {
     private TxnRepository txnRepository;
 
     @Test
-    void test1() throws Exception {
-        jdbcTemplate.update("INSERT INTO txn(txn_id, type, amount, description) values (1, \"CREDIT\", 1000, \"initial setup\");");
-        jdbcTemplate.update("INSERT INTO txn(txn_id, type, amount, description) values (2, 'DEBIT', 500, 'wdl 1');");
-        jdbcTemplate.update("INSERT INTO txn(txn_id, type, amount, description) values (3, 'CREDIT', 200, 'top-up');");
+    void test1() {
+        jdbcTemplate.update("INSERT INTO txn(txn_id, type, amount, description) values (1, \"IW\", 1000, \"initial setup\");");
+        jdbcTemplate.update("INSERT INTO txn(txn_id, type, amount, description) values (2, 'OW', 500, 'wdl 1');");
+        jdbcTemplate.update("INSERT INTO txn(txn_id, type, amount, description) values (3, 'IW', 200, 'top-up');");
    
-
-        List<Txn> results = txnRepository.findByType("CREDIT");
+        List<Txn> results = txnRepository.findByType(TxnType.INWARD);
         assertNotNull(results);
         assertEquals(2, results.size());
     }

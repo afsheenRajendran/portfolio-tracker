@@ -1,20 +1,16 @@
 package com.afsheen.portfoliotracker.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 
 @Entity
 public class Txn {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long txnId;
-    
-    private String type;
+
+    private TxnType type;
 
     private BigDecimal amount;
 
@@ -28,11 +24,11 @@ public class Txn {
         return txnId;
     }
 
-    public String getType() {
+    public TxnType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(TxnType type) {
         this.type = type;
     }
 
