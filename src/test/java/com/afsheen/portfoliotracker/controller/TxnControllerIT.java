@@ -1,6 +1,7 @@
 package com.afsheen.portfoliotracker.controller;
 
 import com.afsheen.portfoliotracker.dto.TxnRequestBody;
+import com.afsheen.portfoliotracker.entity.TxnEntity;
 import com.afsheen.portfoliotracker.repository.TxnRepository;
 import io.restassured.RestAssured;
 import io.restassured.filter.log.LogDetail;
@@ -20,9 +21,9 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
 import java.math.BigDecimal;
+import java.util.List;
 
-import static io.restassured.RestAssured.when;
-import static io.restassured.RestAssured.with;
+import static io.restassured.RestAssured.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -76,7 +77,7 @@ public class TxnControllerIT {
     @Test
     void testCreate() {
         TxnRequestBody req = new TxnRequestBody();
-        req.setType("CREDIT");
+        req.setType("IW");
         req.setAmount(BigDecimal.TEN);
         req.setDescription("test081");
 
@@ -84,10 +85,19 @@ public class TxnControllerIT {
         assertNotNull(response);
 
         assertEquals(201, response.statusCode());
+
+        List<TxnEntity> txnEntities = invoke_findAll()
+                .jsonPath()
+                .getList("", TxnEntity.class);
+
+        assertNotNull(txnEntities);
+        assertEquals(1, txnEntities.size());
     }
 
     private Response invoke_findAll() {
-        return when()
+        return given()
+                .contentType(ContentType.JSON)
+                .when()
                 .request("GET", "/txns")
                 .then()
                 .log()

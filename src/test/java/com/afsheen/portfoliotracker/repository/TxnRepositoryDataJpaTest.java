@@ -24,14 +24,13 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import com.afsheen.portfoliotracker.entity.Txn;
+import com.afsheen.portfoliotracker.entity.TxnEntity;
 
 @Testcontainers
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ContextConfiguration(initializers = TxnRepositoryDataJpaTest.DataSourceInitializer.class)
 @TestPropertySource(properties = {
-    "spring.jpa.hibernate.ddl-auto=create-drop",
     "spring.jpa.hibernate.show_sql=true"
 })
 public class TxnRepositoryDataJpaTest {
@@ -53,13 +52,27 @@ public class TxnRepositoryDataJpaTest {
 
     @Test
     void test1() {
-        jdbcTemplate.update("INSERT INTO txn(txn_id, type, amount, description) values (1, \"IW\", 1000, \"initial setup\");");
-        jdbcTemplate.update("INSERT INTO txn(txn_id, type, amount, description) values (2, 'OW', 500, 'wdl 1');");
-        jdbcTemplate.update("INSERT INTO txn(txn_id, type, amount, description) values (3, 'IW', 200, 'top-up');");
+        jdbcTemplate.update("INSERT INTO account(account_id, name) values (100, 'acct100');");
+
+        jdbcTemplate.update("INSERT INTO txn(txn_id, account_id, type, amount, description) values (100001, 100, \"IW\", 1000, \"initial setup\");");
+        jdbcTemplate.update("INSERT INTO txn(txn_id, account_id, type, amount, description) values (100002, 100, 'OW', 500, 'wdl 1');");
+        jdbcTemplate.update("INSERT INTO txn(txn_id, account_id, type, amount, description) values (100003, 100, 'IW', 200, 'top-up');");
    
-        List<Txn> results = txnRepository.findByType(TxnType.INWARD);
+        List<TxnEntity> results = txnRepository.findByType(TxnType.INWARD);
         assertNotNull(results);
         assertEquals(2, results.size());
+    }
+
+    @Test
+    void test2() {
+        jdbcTemplate.update("INSERT INTO account(account_id, name) values (110, 'acct110');");
+
+        jdbcTemplate.update("INSERT INTO txn(txn_id, account_id, type, amount, description) values (110001, 100, \"IW\", 1000, \"initial setup\");");
+        jdbcTemplate.update("INSERT INTO txn(txn_id, account_id, type, amount, description) values (110002, 100, 'OW', 500, 'wdl 1');");
+
+        List<TxnEntity> results = txnRepository.findByType(TxnType.INWARD);
+        assertNotNull(results);
+        assertEquals(1, results.size());
     }
 
     public static class DataSourceInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {

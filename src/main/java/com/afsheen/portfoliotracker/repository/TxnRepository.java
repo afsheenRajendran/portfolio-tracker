@@ -5,8 +5,8 @@ import java.util.List;
 import com.afsheen.portfoliotracker.entity.TxnType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.afsheen.portfoliotracker.entity.Txn;
+import com.afsheen.portfoliotracker.entity.TxnEntity;
 
-public interface TxnRepository extends JpaRepository<Txn, Long>{
-    List<Txn> findByType(TxnType type);
+public interface TxnRepository extends JpaRepository<TxnEntity, Long>{
+    List<TxnEntity> findByType(TxnType type);
 }

@@ -3,7 +3,9 @@ USE portfolio;
 CREATE TABLE `txn` 
 (
     `txn_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  
+
+    `account_id` bigint(20) unsigned NOT NULL,
+
     `type` varchar(255) NOT NULL,
 
     `amount` DECIMAL(8,2) NOT NULL,
