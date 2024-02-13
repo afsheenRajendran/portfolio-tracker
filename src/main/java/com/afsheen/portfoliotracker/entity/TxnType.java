@@ -1,5 +1,8 @@
 package com.afsheen.portfoliotracker.entity;
 
+import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public enum TxnType {
@@ -17,9 +20,9 @@ public enum TxnType {
         return this.code;
     }
 
-    public static TxnType of(String code) {
+    public static TxnType of(String input) {
         return Stream.of(TxnType.values())
-                .filter(c -> c.getCode().equals(code))
+                .filter(txnType -> (txnType.name().equals(input) || (txnType.getCode().equals(input))))
                 .findFirst()
                 .orElseThrow(IllegalArgumentException::new);
     }

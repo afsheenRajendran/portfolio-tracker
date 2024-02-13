@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.afsheen.portfoliotracker.entity.Txn;
+import com.afsheen.portfoliotracker.entity.TxnEntity;
 import com.afsheen.portfoliotracker.service.TxnService;
 
 @RestController
@@ -28,14 +28,14 @@ public class TxnController {
 
     @ResponseStatus(HttpStatus.CREATED) // 201
     @PostMapping
-    public Txn create(@RequestBody TxnRequestBody txnRequestBody) {
-        Txn txn = txnMapper.buildTxn(txnRequestBody);
+    public TxnEntity create(@RequestBody TxnRequestBody txnRequestBody) {
+        TxnEntity txnEntity = txnMapper.buildTxnEntity(txnRequestBody);
 
-        return txnService.save(txn);
+        return txnService.save(txnEntity);
     }
 
     @GetMapping
-    public List<Txn> findAll() {
+    public List<TxnEntity> findAllTxns() {
         return txnService.findAll();
     }
 

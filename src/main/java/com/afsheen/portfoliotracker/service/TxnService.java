@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.afsheen.portfoliotracker.entity.Txn;
+import com.afsheen.portfoliotracker.entity.TxnEntity;
 import com.afsheen.portfoliotracker.repository.TxnRepository;
 
 @Service
@@ -18,17 +18,17 @@ public class TxnService {
     @Autowired
     private TxnRepository txnRepository;
 
-    public Txn save(Txn txn) {
-        logger.info("Calling save with txn desc = " + txn.getDescription());
-        return txnRepository.save(txn);
+    public TxnEntity save(TxnEntity txnEntity) {
+        logger.info("Calling save with txn desc = " + txnEntity.getDescription());
+        return txnRepository.save(txnEntity);
     }
 
-    public List<Txn> findAll() {
+    public List<TxnEntity> findAll() {
         return txnRepository.findAll();
     }
 
-    public List<Txn> findByType(String type) {
-        TxnType txnType = TxnType.of(type);
+    public List<TxnEntity> findByType(String rawTxnType) {
+        TxnType txnType = TxnType.of(rawTxnType);
 
         return txnRepository.findByType(txnType);
     }
